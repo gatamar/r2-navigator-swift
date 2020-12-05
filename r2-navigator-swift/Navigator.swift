@@ -93,6 +93,7 @@ public protocol NavigatorDelegate: AnyObject {
     /// format of `content` and `referrer`, such as `text/html`.
     func navigator(_ navigator: Navigator, shouldNavigateToNoteAt link: Link, content: String, referrer: String?) -> Bool
     
+    func navigator(_ navigator: Navigator, selectionChanged atRect: CGRect)
 }
 
 

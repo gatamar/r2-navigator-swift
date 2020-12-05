@@ -31,6 +31,8 @@ protocol EPUBSpreadViewDelegate: class {
     /// Called when the spread view needs to present a view controller.
     func spreadView(_ spreadView: EPUBSpreadView, present viewController: UIViewController)
     
+    /// Called when the user tapped on the spread contents.
+    func spreadView(_ spreadView: EPUBSpreadView, selectionChanged atRect: CGRect)
 }
 
 class EPUBSpreadView: UIView, Loggable {
@@ -236,7 +238,7 @@ class EPUBSpreadView: UIView, Loggable {
             self.scrollView.alpha = 1
         })
     }
-
+    
     /// Called by the JavaScript layer when the user selection changed.
     private func selectionDidChange(_ body: Any) {
         guard let selection = body as? [String: Any],
@@ -246,14 +248,18 @@ class EPUBSpreadView: UIView, Loggable {
             log(.warning, "Invalid body for selectionDidChange: \(body)")
             return
         }
+        let selFrame = CGRect(
+            x: frame["x"] as? CGFloat ?? 0,
+            y: frame["y"] as? CGFloat ?? 0,
+            width: frame["width"] as? CGFloat ?? 0,
+            height: frame["height"] as? CGFloat ?? 0
+        )
+        
+        delegate?.spreadView(self, selectionChanged: selFrame)
+        
         editingActions.selectionDidChange((
             text: text,
-            frame: CGRect(
-                x: frame["x"] as? CGFloat ?? 0,
-                y: frame["y"] as? CGFloat ?? 0,
-                width: frame["width"] as? CGFloat ?? 0,
-                height: frame["height"] as? CGFloat ?? 0
-            )
+            frame: selFrame
         ))
     }
     

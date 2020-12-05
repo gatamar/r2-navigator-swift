@@ -612,7 +612,10 @@ extension EPUBNavigatorViewController: EPUBSpreadViewDelegate {
     func spreadView(_ spreadView: EPUBSpreadView, present viewController: UIViewController) {
         present(viewController, animated: true)
     }
-
+    
+    func spreadView(_ spreadView: EPUBSpreadView, selectionChanged atRect: CGRect) {
+        delegate?.navigator(self, selectionChanged: atRect)
+    }
 }
 
 extension EPUBNavigatorViewController: EditingActionsControllerDelegate {
