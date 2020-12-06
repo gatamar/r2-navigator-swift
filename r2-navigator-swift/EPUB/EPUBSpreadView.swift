@@ -31,8 +31,8 @@ protocol EPUBSpreadViewDelegate: class {
     /// Called when the spread view needs to present a view controller.
     func spreadView(_ spreadView: EPUBSpreadView, present viewController: UIViewController)
     
-    /// Called when the user tapped on the spread contents.
-    func spreadView(_ spreadView: EPUBSpreadView, selectionChanged atRect: CGRect)
+    /// Called when the user finished selecting.
+    func spreadView(_ spreadView: EPUBSpreadView, selectionChangeEnd atRect: CGRect)
 }
 
 class EPUBSpreadView: UIView, Loggable {
@@ -98,12 +98,12 @@ class EPUBSpreadView: UIView, Loggable {
 
         NotificationCenter.default.addObserver(self, selector: #selector(voiceOverStatusDidChange), name: Notification.Name(UIAccessibilityVoiceOverStatusChanged), object: nil)
         
-        UIMenuController.shared.menuItems = [
-            UIMenuItem(
-                title: R2NavigatorLocalizedString("EditingAction.share"),
-                action: #selector(shareSelection)
-            )
-        ]
+//        UIMenuController.shared.menuItems = [
+//            UIMenuItem(
+//                title: R2NavigatorLocalizedString("EditingAction.share"),
+//                action: #selector(shareSelection)
+//            )
+//        ]
         
         updateActivityIndicator()
         loadSpread()
@@ -255,12 +255,31 @@ class EPUBSpreadView: UIView, Loggable {
             height: frame["height"] as? CGFloat ?? 0
         )
         
-        delegate?.spreadView(self, selectionChanged: selFrame)
+        delegate?.spreadView(self, selectionChangeEnd: selFrame)
         
         editingActions.selectionDidChange((
             text: text,
             frame: selFrame
         ))
+    }
+    
+    /// Called by the JavaScript layer when the user's touch ended.
+    private func selectionChangeEnd(_ body: Any) {
+        guard let selection = body as? [String: Any],
+            let text = selection["text"] as? String,
+            let frame = selection["frame"] as? [String: Any] else
+        {
+            log(.warning, "Invalid body for selectionDidChange: \(body)")
+            return
+        }
+        let selFrame = CGRect(
+            x: frame["x"] as? CGFloat ?? 0,
+            y: frame["y"] as? CGFloat ?? 0,
+            width: frame["width"] as? CGFloat ?? 0,
+            height: frame["height"] as? CGFloat ?? 0
+        )
+        
+        delegate?.spreadView(self, selectionChangeEnd: selFrame)
     }
     
     /// Called when the user hit the Share item in the selection context menu.
@@ -358,7 +377,7 @@ class EPUBSpreadView: UIView, Loggable {
         registerJSMessage(named: "logError") { [weak self] in self?.didLogError($0) }
         registerJSMessage(named: "tap") { [weak self] in self?.didTap($0) }
         registerJSMessage(named: "spreadLoaded") { [weak self] in self?.spreadDidLoad($0) }
-        registerJSMessage(named: "selectionChanged") { [weak self] in self?.selectionDidChange($0) }
+        registerJSMessage(named: "selectionChangeEnd") { [weak self] in self?.selectionChangeEnd($0) }
     }
     
     /// Add the message handlers for incoming javascript events.

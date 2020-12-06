@@ -51,22 +51,22 @@ var readium = (function() {
         ticking = true;
     });
 
-    document.addEventListener('selectionchange', debounce(50, function() {
-        var info = {}
-        var selection = document.getSelection();
-        if (selection && selection.rangeCount > 0) {
-            var rect = selection.getRangeAt(0).getBoundingClientRect();
-            info['text'] = selection.toString().trim();
-            info['frame'] = {
-                'x': rect.left,
-                'y': rect.top,
-                'width': rect.width,
-                'height': rect.height
-            };
-        }
-
-        webkit.messageHandlers.selectionChanged.postMessage(info);
-    }));
+//    document.addEventListener('selectionchange', debounce(50, function() {
+//        var info = {}
+//        var selection = document.getSelection();
+//        if (selection && selection.rangeCount > 0) {
+//            var rect = selection.getRangeAt(0).getBoundingClientRect();
+//            info['text'] = selection.toString().trim();
+//            info['frame'] = {
+//                'x': rect.left,
+//                'y': rect.top,
+//                'width': rect.width,
+//                'height': rect.height
+//            };
+//        }
+//
+//        webkit.messageHandlers.selectionChanged.postMessage(info);
+//    }));
 
     function orientationChanged() {
         maxScreenX = (window.orientation === 0 || window.orientation == 180) ? screen.width : screen.height;

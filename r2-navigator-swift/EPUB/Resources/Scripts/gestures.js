@@ -4,8 +4,26 @@
     document.body.style.cursor = 'pointer';
     
     document.addEventListener('click', onClick, false);
+      document.addEventListener('touchend', onTouchEnd, false);
   });
 
+    function onTouchEnd(event) {
+        var info = {}
+        var selection = document.getSelection();
+        if (event.touches.length == 0 && selection && selection.rangeCount > 0) {
+            var rect = selection.getRangeAt(0).getBoundingClientRect();
+            info['text'] = selection.toString().trim();
+            info['frame'] = {
+                'x': rect.left,
+                'y': rect.top,
+                'width': rect.width,
+                'height': rect.height
+            };
+            
+            webkit.messageHandlers.selectionChangeEnd.postMessage(info);
+        }
+    }
+    
   function onClick(event) {
 
     if (!window.getSelection().isCollapsed) {
