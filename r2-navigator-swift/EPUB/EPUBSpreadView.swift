@@ -278,7 +278,9 @@ class EPUBSpreadView: UIView, Loggable {
             width: frame["width"] as? CGFloat ?? 0,
             height: frame["height"] as? CGFloat ?? 0
         )
-        
+        evaluateScript("processContextMenuCommand(2, -1);") { (res, error) in
+            print(error)
+        }
         delegate?.spreadView(self, selectionChangeEnd: selFrame)
     }
     
@@ -333,7 +335,8 @@ class EPUBSpreadView: UIView, Loggable {
     
     private static let gesturesScript = loadScript(named: "gestures")
     private static let utilsScript = loadScript(named: "utils")
-
+    private static let customBlockScript = loadScript(named: "customBlock")
+    
     class func loadScript(named name: String) -> String {
         return Bundle(for: EPUBSpreadView.self)
             .url(forResource: "Scripts/\(name)", withExtension: "js")
@@ -348,7 +351,8 @@ class EPUBSpreadView: UIView, Loggable {
     func makeScripts() -> [WKUserScript] {
         return [
             WKUserScript(source: EPUBSpreadView.gesturesScript, injectionTime: .atDocumentStart, forMainFrameOnly: false),
-            WKUserScript(source: EPUBSpreadView.utilsScript, injectionTime: .atDocumentStart, forMainFrameOnly: false)
+            WKUserScript(source: EPUBSpreadView.utilsScript, injectionTime: .atDocumentStart, forMainFrameOnly: false),
+            WKUserScript(source: EPUBSpreadView.customBlockScript, injectionTime: .atDocumentStart, forMainFrameOnly: false)
         ]
     }
     
