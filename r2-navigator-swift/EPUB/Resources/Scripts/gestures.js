@@ -9,10 +9,10 @@
 
     function onTouchEnd(event) {
         var info = {}
-        var selection = document.getSelection();
-        if (event.touches.length == 0 && selection && selection.rangeCount > 0) {
-            var rect = selection.getRangeAt(0).getBoundingClientRect();
-            info['text'] = selection.toString().trim();
+        var selectionText = window.getSelection().toString();
+        if (event.touches.length == 0 && selectionText.length !== 0) {
+            var rect = window.getSelection().getRangeAt(0).getBoundingClientRect();
+            info['text'] = selectionText.trim();
             info['frame'] = {
                 'x': rect.left,
                 'y': rect.top,

@@ -150,6 +150,10 @@ open class CBZNavigatorViewController: UIViewController, VisualNavigator, Loggab
         return goToResourceAtIndex(index, animated: animated, completion: completion)
     }
     
+    public func go(to customBlock: Int, animated: Bool, completion: @escaping () -> Void) -> Bool {
+        fatalError("TODO")
+    }
+    
     public func goForward(animated: Bool, completion: @escaping () -> Void) -> Bool {
         return goToResourceAtIndex(currentResourceIndex + 1, animated: animated, completion: completion)
     }

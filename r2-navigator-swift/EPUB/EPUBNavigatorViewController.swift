@@ -472,6 +472,10 @@ open class EPUBNavigatorViewController: UIViewController, VisualNavigator, Logga
         return go(to: Locator(link: link), animated: animated, completion: completion)
     }
     
+    public func go(to customBlock: Int, animated: Bool, completion: @escaping () -> Void) -> Bool {
+        fatalError("TODO")
+    }
+    
     public func goForward(animated: Bool, completion: @escaping () -> Void) -> Bool {
         let direction: EPUBSpreadView.Direction = {
             switch readingProgression {

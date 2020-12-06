@@ -32,6 +32,12 @@ public protocol Navigator {
     @discardableResult
     func go(to link: Link, animated: Bool, completion: @escaping () -> Void) -> Bool
     
+    /// Moves to the position in the publication targeted by the given custom block ID.
+    /// - Parameter completion: Called when the transition is completed.
+    /// - Returns: Whether the navigator is able to move to the locator. The completion block is only called if true was returned.
+    @discardableResult
+    func go(to customBlock: Int, animated: Bool, completion: @escaping () -> Void) -> Bool
+    
     /// Moves to the next content portion (eg. page) in the reading progression direction.
     /// - Parameter completion: Called when the transition is completed.
     /// - Returns: Whether the navigator is able to move to the next content portion. The completion block is only called if true was returned.

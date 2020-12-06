@@ -180,6 +180,10 @@ open class PDFNavigatorViewController: UIViewController, VisualNavigator, Loggab
         return true
     }
     
+    public func go(to customBlock: Int, animated: Bool, completion: @escaping () -> Void) -> Bool {
+        fatalError("TODO")
+    }
+    
     private func updateScaleFactors() {
         guard scalesDocumentToFit else {
             return
