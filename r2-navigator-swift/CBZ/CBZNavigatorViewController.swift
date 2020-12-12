@@ -112,7 +112,7 @@ open class CBZNavigatorViewController: UIViewController, VisualNavigator, Loggab
 
     @objc private func didTap(_ gesture: UITapGestureRecognizer) {
         let point = gesture.location(in: view)
-        delegate?.navigator(self, didTapAt: point)
+        delegate?.navigator(self, didTapAt: point, atCustomBlock: -1)
     }
     
     private func imageViewController(at index: Int) -> ImageViewController? {

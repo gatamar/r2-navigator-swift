@@ -230,7 +230,7 @@ open class EPUBNavigatorViewController: UIViewController, VisualNavigator, Logga
     @objc private func didTapBackground(_ gesture: UITapGestureRecognizer) {
         guard state == .loading else { return }
         let point = gesture.location(in: view)
-        delegate?.navigator(self, didTapAt: point)
+        delegate?.navigator(self, didTapAt: point, atCustomBlock: -1)
     }
 
     open override func viewWillDisappear(_ animated: Bool) {
@@ -504,12 +504,12 @@ open class EPUBNavigatorViewController: UIViewController, VisualNavigator, Logga
 
 extension EPUBNavigatorViewController: EPUBSpreadViewDelegate {
     
-    func spreadView(_ spreadView: EPUBSpreadView, didTapAt point: CGPoint) {
+    func spreadView(_ spreadView: EPUBSpreadView, didTapAt point: CGPoint, atCustomBlock blockId: Int) {
         // We allow taps in any state, because we should always be able to toggle the navigation bar,
         // even while a locator is pending.
         
         let point = view.convert(point, from: spreadView)
-        delegate?.navigator(self, didTapAt: point)
+        delegate?.navigator(self, didTapAt: point, atCustomBlock: blockId)
         // FIXME: Deprecated, to be removed at some point.
         delegate?.middleTapHandler()
         

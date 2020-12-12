@@ -137,7 +137,7 @@ open class PDFNavigatorViewController: UIViewController, VisualNavigator, Loggab
     
     @objc private func didTap(_ gesture: UITapGestureRecognizer) {
         let point = gesture.location(in: view)
-        delegate?.navigator(self, didTapAt: point)
+        delegate?.navigator(self, didTapAt: point, atCustomBlock: -1)
     }
     
     @objc private func pageDidChange() {

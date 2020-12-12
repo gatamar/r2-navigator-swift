@@ -17,7 +17,7 @@ import SwiftSoup
 protocol EPUBSpreadViewDelegate: class {
     
     /// Called when the user tapped on the spread contents.
-    func spreadView(_ spreadView: EPUBSpreadView, didTapAt point: CGPoint)
+    func spreadView(_ spreadView: EPUBSpreadView, didTapAt point: CGPoint, atCustomBlock blockId: Int)
     
     /// Called when the user tapped on an external link.
     func spreadView(_ spreadView: EPUBSpreadView, didTapOnExternalURL url: URL)
@@ -203,7 +203,7 @@ class EPUBSpreadView: UIView, Loggable {
         if !tapData.defaultPrevented && tapData.interactiveElement == nil,
             let point = pointFromTap(tapData)
         {
-            delegate?.spreadView(self, didTapAt: point)
+            delegate?.spreadView(self, didTapAt: point, atCustomBlock: tapData.customBlockId)
         }
     }
     
@@ -216,7 +216,7 @@ class EPUBSpreadView: UIView, Loggable {
     /// Called by the UITapGestureRecognizer as a fallback tap when tapping around the webview.
     @objc private func didTapBackground(_ gesture: UITapGestureRecognizer) {
         let point = gesture.location(in: self)
-        delegate?.spreadView(self, didTapAt: point)
+        delegate?.spreadView(self, didTapAt: point, atCustomBlock: -1)
     }
 
     /// Called by the javascript code when the spread contents is fully loaded.
@@ -549,6 +549,7 @@ struct TapData {
     let clientY: Int
     let targetElement: String
     let interactiveElement: String?
+    let customBlockId: Int // -1, if no block
     
     init(dict: [String: Any]) {
         self.defaultPrevented = dict["defaultPrevented"] as? Bool ?? false
@@ -558,6 +559,7 @@ struct TapData {
         self.clientY = dict["clientY"] as? Int ?? 0
         self.targetElement = dict["targetElement"] as? String ?? ""
         self.interactiveElement = dict["interactiveElement"] as? String
+        self.customBlockId = dict["customBlockId"] as? Int ?? -1
     }
     
     init(data: Any) {

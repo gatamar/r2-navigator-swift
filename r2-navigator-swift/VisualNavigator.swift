@@ -66,13 +66,13 @@ public protocol VisualNavigatorDelegate: NavigatorDelegate {
 
     /// Called when the user tapped the publication, and it didn't trigger any internal action.
     /// The point is relative to the navigator's view.
-    func navigator(_ navigator: VisualNavigator, didTapAt point: CGPoint)
+    func navigator(_ navigator: VisualNavigator, didTapAt point: CGPoint, atCustomBlock blockID: Int)
     
 }
 
 public extension VisualNavigatorDelegate {
     
-    func navigator(_ navigator: VisualNavigator, didTapAt point: CGPoint) {
+    func navigator(_ navigator: VisualNavigator, didTapAt point: CGPoint, atCustomBlock blockID: Int) {
         // Optional
     }
     
