@@ -115,6 +115,8 @@ public protocol NavigatorDelegate: AnyObject {
     func navigator(_ navigator: Navigator, selectionChanged atRect: CGRect)
     
     func navigator(_ navigator: Navigator, didScrollingBegin: Bool)
+    
+    func navigator(_ navigator: Navigator, didDragAndDropBegin: Bool)
 }
 
 

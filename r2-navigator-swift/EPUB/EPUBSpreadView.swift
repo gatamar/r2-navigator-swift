@@ -36,6 +36,9 @@ protocol EPUBSpreadViewDelegate: class {
     
     /// Called when the user tapped on an internal link.
     func spreadView(_ spreadView: EPUBSpreadView, didStartScrolling: Bool)
+    
+    /// Called when the user tapped on an internal link.
+    func spreadView(_ spreadView: EPUBSpreadView, didStartDragAndDrop: Bool)
 }
 
 class EPUBSpreadView: UIView, Loggable {
@@ -274,6 +277,11 @@ class EPUBSpreadView: UIView, Loggable {
         ))
     }
     
+    
+    private func dragAndDropStarted(_ body: Any) {
+        delegate?.spreadView(self, didStartDragAndDrop: true)
+    }
+    
     /// Called by the JavaScript layer when the user's touch ended.
     private func selectionChangeEnd(_ body: Any) {
         guard let selection = body as? [String: Any],
@@ -390,6 +398,7 @@ class EPUBSpreadView: UIView, Loggable {
         registerJSMessage(named: "tap") { [weak self] in self?.didTap($0) }
         registerJSMessage(named: "spreadLoaded") { [weak self] in self?.spreadDidLoad($0) }
         registerJSMessage(named: "selectionChangeEnd") { [weak self] in self?.selectionChangeEnd($0) }
+        registerJSMessage(named: "dragAndDropStarted") { [weak self] in self?.dragAndDropStarted($0) }
     }
     
     /// Add the message handlers for incoming javascript events.
