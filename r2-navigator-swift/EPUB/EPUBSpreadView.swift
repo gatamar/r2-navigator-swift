@@ -239,6 +239,13 @@ class EPUBSpreadView: UIView, Loggable {
         })
     }
     
+    func makeCustomBlock(_ props: CustomBlockProps) -> Bool {
+        evaluateScript(String(format: "processContextMenuCommand(%d, %d, %d);", props.color, props.isMindMap, props.blockId)) { (res, error) in
+            print(error)
+        }
+        return true
+    }
+                    
     /// Called by the JavaScript layer when the user selection changed.
     private func selectionDidChange(_ body: Any) {
         guard let selection = body as? [String: Any],
@@ -278,9 +285,6 @@ class EPUBSpreadView: UIView, Loggable {
             width: frame["width"] as? CGFloat ?? 0,
             height: frame["height"] as? CGFloat ?? 0
         )
-        evaluateScript("processContextMenuCommand(2, -1);") { (res, error) in
-            print(error)
-        }
         delegate?.spreadView(self, selectionChangeEnd: selFrame)
     }
     

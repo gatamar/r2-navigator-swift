@@ -13,6 +13,17 @@ import Foundation
 import SafariServices
 import R2Shared
 
+public struct CustomBlockProps {
+    public var blockId: Int = -1
+    public var color: Int = 0
+    public var isMindMap: Bool = false
+    
+    public init(blockId: Int, color: Int, isMindMap: Bool) {
+        self.blockId = blockId
+        self.color = color
+        self.isMindMap = isMindMap
+    }
+}
 
 public protocol Navigator {
     
@@ -50,6 +61,8 @@ public protocol Navigator {
     @discardableResult
     func goBackward(animated: Bool, completion: @escaping () -> Void) -> Bool
 
+    @discardableResult
+    func makeCustomBlock(with props: CustomBlockProps, completion: @escaping () -> Void) -> Bool
 }
 
 public extension Navigator {

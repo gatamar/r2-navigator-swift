@@ -1,12 +1,6 @@
-var gCustomBlockNum = 0;
 var gSelectedCustomBlockNum = -1; // it's not selection, it's existing block
 var gCustomHtmlType = "ins";
 var gQuiteComplexTags = ["p", "P", "h1", "h2", "h3", "h4", "h5", "H1", "H2", "H3", "H4"];
-
-function setNextHtmlIdAndFontSize(nextId)
-{
-    gCustomBlockNum = nextId;
-}
 
 function sendCMD(cmd)
 {
@@ -223,7 +217,7 @@ function modifyTreePartForBorderElement(elem, elemBlockAncestor, blockId, dirNex
 
 // returns: dispatches "CMD_CUSTOM_BLOCK_JUST_ADDED_"
 // but should I dispatch it instead of just return in this case?
-function processContextMenuCommand(colorType, isMindMap)
+function processContextMenuCommand(colorType, isMindMap, gCustomBlockNum)
 {
     if ( gSelectedCustomBlockNum != -1 )
     {
@@ -236,8 +230,6 @@ function processContextMenuCommand(colorType, isMindMap)
         var selText = window.getSelection().toString();
         if ( selText.length !== 0 )
         {
-            gCustomBlockNum = gCustomBlockNum + 1;
-            
             var range = window.getSelection().getRangeAt(0);
             if ( range.startContainer != range.endContainer )
             {

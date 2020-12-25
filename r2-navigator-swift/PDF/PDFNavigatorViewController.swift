@@ -22,6 +22,10 @@ public protocol PDFNavigatorDelegate: VisualNavigatorDelegate { }
 @available(iOS 11.0, *)
 open class PDFNavigatorViewController: UIViewController, VisualNavigator, Loggable {
     
+    public func makeCustomBlock(with props: CustomBlockProps, completion: @escaping () -> Void) -> Bool {
+        return false
+    }
+    
     enum Error: Swift.Error {
         case openPDFFailed
     }

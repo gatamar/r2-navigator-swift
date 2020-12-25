@@ -500,6 +500,13 @@ open class EPUBNavigatorViewController: UIViewController, VisualNavigator, Logga
         return go(to: direction, animated: animated, completion: completion)
     }
     
+    public func makeCustomBlock(with props: CustomBlockProps, completion: @escaping () -> Void) -> Bool {
+        guard let spreadView = paginationView.currentView as? EPUBSpreadView else {
+            return false
+        }
+        return spreadView.makeCustomBlock(props)
+    }
+    
 }
 
 extension EPUBNavigatorViewController: EPUBSpreadViewDelegate {
