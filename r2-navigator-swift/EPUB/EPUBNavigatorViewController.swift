@@ -627,6 +627,11 @@ extension EPUBNavigatorViewController: EPUBSpreadViewDelegate {
     func spreadView(_ spreadView: EPUBSpreadView, selectionChangeEnd atRect: CGRect) {
         delegate?.navigator(self, selectionChanged: atRect)
     }
+    
+    /// Called when the user tapped on an internal link.
+    func spreadView(_ spreadView: EPUBSpreadView, didStartScrolling: Bool) {
+        delegate?.navigator(self, didScrollingBegin: didStartScrolling)
+    }
 }
 
 extension EPUBNavigatorViewController: EditingActionsControllerDelegate {

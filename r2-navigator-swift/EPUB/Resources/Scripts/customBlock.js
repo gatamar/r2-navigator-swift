@@ -1,4 +1,3 @@
-var gSelectedCustomBlockNum = -1; // it's not selection, it's existing block
 var gCustomHtmlType = "ins";
 var gQuiteComplexTags = ["p", "P", "h1", "h2", "h3", "h4", "h5", "H1", "H2", "H3", "H4"];
 
@@ -46,7 +45,6 @@ function detectTouchedCustomBlock(pagex, pagey) {
 
 function resetActiveBlock()
 {
-    gSelectedCustomBlockNum = -1;
     document.body.style.webkitUserSelect = "text";
     //sendDebugInfo(`TEST_SELECT: text`);
     sendCMD(`CMD_CUSTOM_BLOCK_HIDE_MENU`);
@@ -219,10 +217,9 @@ function modifyTreePartForBorderElement(elem, elemBlockAncestor, blockId, dirNex
 // but should I dispatch it instead of just return in this case?
 function processContextMenuCommand(colorType, isMindMap, gCustomBlockNum)
 {
-    if ( gSelectedCustomBlockNum != -1 )
+    if ( gCustomBlockNum != -1 )
     {
-        changeExistingCustomBlockProperties(gSelectedCustomBlockNum, colorType, isMindMap, false);
-        sendCMD(`CMD_CUSTOM_BLOCK_JUST_UPDATED_${gSelectedCustomBlockNum}_${colorType}_${isMindMap}`);
+        changeExistingCustomBlockProperties(gCustomBlockNum, colorType, isMindMap, false);
         resetActiveBlock();
     }
     else
@@ -279,7 +276,7 @@ function processContextMenuCommand(colorType, isMindMap, gCustomBlockNum)
             clearTextSelection();
             resetActiveBlock();
             
-            sendCMD(`CMD_CUSTOM_BLOCK_JUST_ADDED_${gCustomBlockNum}_${colorType}_${isMindMap}_${getFullTextOfHTMLBlocksWithID(gCustomBlockNum)}`);
+            //sendCMD(`CMD_CUSTOM_BLOCK_JUST_ADDED_${gCustomBlockNum}_${colorType}_${isMindMap}_${getFullTextOfHTMLBlocksWithID(gCustomBlockNum)}`);
         }
     }
 }

@@ -113,6 +113,8 @@ public protocol NavigatorDelegate: AnyObject {
     func navigator(_ navigator: Navigator, shouldNavigateToNoteAt link: Link, content: String, referrer: String?) -> Bool
     
     func navigator(_ navigator: Navigator, selectionChanged atRect: CGRect)
+    
+    func navigator(_ navigator: Navigator, didScrollingBegin: Bool)
 }
 
 

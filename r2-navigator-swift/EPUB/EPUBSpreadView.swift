@@ -33,6 +33,9 @@ protocol EPUBSpreadViewDelegate: class {
     
     /// Called when the user finished selecting.
     func spreadView(_ spreadView: EPUBSpreadView, selectionChangeEnd atRect: CGRect)
+    
+    /// Called when the user tapped on an internal link.
+    func spreadView(_ spreadView: EPUBSpreadView, didStartScrolling: Bool)
 }
 
 class EPUBSpreadView: UIView, Loggable {
@@ -240,6 +243,7 @@ class EPUBSpreadView: UIView, Loggable {
     }
     
     func makeCustomBlock(_ props: CustomBlockProps) -> Bool {
+        print("TADAM makeCustomBlock \(props.blockId) \(props.color) \(props.isMindMap)")
         evaluateScript(String(format: "processContextMenuCommand(%d, %d, %d);", props.color, props.isMindMap, props.blockId)) { (res, error) in
             print(error)
         }
@@ -491,6 +495,7 @@ extension EPUBSpreadView: UIScrollViewDelegate {
     }
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        delegate?.spreadView(self, didStartScrolling: true)
         webView.dismissUserSelection()
     }
 
