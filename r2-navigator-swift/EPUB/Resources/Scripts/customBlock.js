@@ -213,11 +213,21 @@ function modifyTreePartForBorderElement(elem, elemBlockAncestor, blockId, dirNex
     }
 }
 
+function isThereSuchBlockOnThisPage(blockId)
+{
+    var curClassName = "MyCustomBlock"+blockId.toString();
+    var curCustomBlockS = document.getElementsByClassName(curClassName);
+    return curCustomBlockS.length != 0;
+}
+
 // returns: dispatches "CMD_CUSTOM_BLOCK_JUST_ADDED_"
 // but should I dispatch it instead of just return in this case?
 function processContextMenuCommand(colorType, isMindMap, gCustomBlockNum)
 {
-    if ( gCustomBlockNum != -1 )
+    // if there's no such block at this page, let's create it!!!
+    // if there's such block at this page, let's modify it!!!
+    
+    if ( isThereSuchBlockOnThisPage(gCustomBlockNum) )
     {
         changeExistingCustomBlockProperties(gCustomBlockNum, colorType, isMindMap, false);
         resetActiveBlock();
@@ -275,8 +285,6 @@ function processContextMenuCommand(colorType, isMindMap, gCustomBlockNum)
             
             clearTextSelection();
             resetActiveBlock();
-            
-            //sendCMD(`CMD_CUSTOM_BLOCK_JUST_ADDED_${gCustomBlockNum}_${colorType}_${isMindMap}_${getFullTextOfHTMLBlocksWithID(gCustomBlockNum)}`);
         }
     }
 }
