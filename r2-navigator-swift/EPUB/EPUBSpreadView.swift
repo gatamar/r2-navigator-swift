@@ -246,8 +246,9 @@ class EPUBSpreadView: UIView, Loggable {
     }
     
     func makeCustomBlock(_ props: CustomBlockProps) -> Bool {
-        print("TADAM makeCustomBlock \(props.blockId) \(props.color) \(props.isMindMap)")
-        evaluateScript(String(format: "processContextMenuCommand(%d, %d, %d);", props.color, props.isMindMap, props.blockId)) { (res, error) in
+        let str = String(format: "processContextMenuCommand(%d, %@, %d);", props.color, props.isMindMap ? "true":"false", props.blockId)
+        print("makeCustomBlock: \(str)")
+        evaluateScript(str) { (res, error) in
             print(error)
         }
         return true
@@ -280,6 +281,12 @@ class EPUBSpreadView: UIView, Loggable {
     
     private func dragAndDropStarted(_ body: Any) {
         delegate?.spreadView(self, didStartDragAndDrop: true)
+    }
+    
+    private func addedCustomBlockFromSelection(_ body: Any) {
+        print(body as! String)
+        abort()
+        //delegate?.spreadView(self, addedCustomBlockFromSelection: true)
     }
     
     /// Called by the JavaScript layer when the user's touch ended.
@@ -353,6 +360,13 @@ class EPUBSpreadView: UIView, Loggable {
     private static let utilsScript = loadScript(named: "utils")
     private static let customBlockScript = loadScript(named: "customBlock")
     
+    private static let rangy1 = loadScript(named: "rangy-core")
+    private static let rangy2 = loadScript(named: "rangy-textrange")
+    private static let rangy3 = loadScript(named: "rangy-classapplier")
+    private static let rangy4 = loadScript(named: "rangy-highlighter")
+    private static let rangy5 = loadScript(named: "rangy-serializer")
+    private static let rangy6 = loadScript(named: "rangy-selectionsaverestore")
+    
     class func loadScript(named name: String) -> String {
         return Bundle(for: EPUBSpreadView.self)
             .url(forResource: "Scripts/\(name)", withExtension: "js")
@@ -368,7 +382,15 @@ class EPUBSpreadView: UIView, Loggable {
         return [
             WKUserScript(source: EPUBSpreadView.gesturesScript, injectionTime: .atDocumentStart, forMainFrameOnly: false),
             WKUserScript(source: EPUBSpreadView.utilsScript, injectionTime: .atDocumentStart, forMainFrameOnly: false),
-            WKUserScript(source: EPUBSpreadView.customBlockScript, injectionTime: .atDocumentStart, forMainFrameOnly: false)
+            
+            WKUserScript(source: EPUBSpreadView.rangy1, injectionTime: .atDocumentEnd, forMainFrameOnly: false),
+            WKUserScript(source: EPUBSpreadView.rangy2, injectionTime: .atDocumentEnd, forMainFrameOnly: false),
+            WKUserScript(source: EPUBSpreadView.rangy3, injectionTime: .atDocumentEnd, forMainFrameOnly: false),
+            WKUserScript(source: EPUBSpreadView.rangy4, injectionTime: .atDocumentEnd, forMainFrameOnly: false),
+            WKUserScript(source: EPUBSpreadView.rangy5, injectionTime: .atDocumentEnd, forMainFrameOnly: false),
+            WKUserScript(source: EPUBSpreadView.rangy6, injectionTime: .atDocumentEnd, forMainFrameOnly: false),
+            
+            WKUserScript(source: EPUBSpreadView.customBlockScript, injectionTime: .atDocumentEnd, forMainFrameOnly: false)
         ]
     }
     
@@ -399,6 +421,7 @@ class EPUBSpreadView: UIView, Loggable {
         registerJSMessage(named: "spreadLoaded") { [weak self] in self?.spreadDidLoad($0) }
         registerJSMessage(named: "selectionChangeEnd") { [weak self] in self?.selectionChangeEnd($0) }
         registerJSMessage(named: "dragAndDropStarted") { [weak self] in self?.dragAndDropStarted($0) }
+        registerJSMessage(named: "addedCustomBlockFromSelection") { [weak self] in self?.addedCustomBlockFromSelection($0) }
     }
     
     /// Add the message handlers for incoming javascript events.

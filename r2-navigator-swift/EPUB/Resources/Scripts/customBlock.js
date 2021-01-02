@@ -1,3 +1,38 @@
+function restorePreviousHighlight(sel_str, color, border, blockId)
+{
+    var highlighter;
+    rangy.init();
+    
+    highlighter = rangy.createHighlighter();
+    highlighter.addClassApplier(rangy.createClassApplier("highlight", 42, "green", {
+        ignoreWhiteSpace: true,
+        tagNames: ["span", "a"],
+        selection: rangy.restoreSelectionFromString(sel_str)
+    }));
+    highlighter.highlightSelection("highlight", null, color, border, blockId);
+}
+
+function highlightSelectionSomehow(color, border, blockId)
+{
+    var highlighter;
+    rangy.init();
+    
+    var selObj = rangy.getSelection();
+    var selString = rangy.serializeSelection(selObj, true);
+    
+    highlighter = rangy.createHighlighter();
+    highlighter.addClassApplier(rangy.createClassApplier("highlight", blockId, color, {
+        ignoreWhiteSpace: true,
+        tagNames: ["span", "a"]
+    }));
+    highlighter.highlightSelection("highlight", null, color, border, blockId);
+    
+    window.getSelection().removeAllRanges();
+    
+    return selString;
+}
+
+
 var gCustomHtmlType = "ins";
 var gQuiteComplexTags = ["p", "P", "h1", "h2", "h3", "h4", "h5", "H1", "H2", "H3", "H4"];
 
@@ -93,6 +128,27 @@ function getRGBACssStringForColorType(colorType)
     return "rgba("+red.toString()+","+green.toString()+","+blue.toString()+",0.5)";
 }
 
+function getColorStringForColorType(colorType)
+{
+    if ( colorType == 1 ) // yellow
+    {
+        return "yellow";
+    }
+    if ( colorType == 2 ) // orange
+    {
+        return "orange";
+    }
+    if ( colorType == 3 ) // blue
+    {
+        return "blue";
+    }
+    if ( colorType == 4 ) // green
+    {
+        return "green";
+    }
+    return "";
+}
+
 // param "colorType": 0=not color,1,2,3,4 = some pre-defined color types
 // param "isMindMap": -1,0,1
 function changeExistingCustomBlockProperties(blockId, colorType, isMindMap, isNewBlock)
@@ -134,52 +190,6 @@ function changeExistingCustomBlockProperties(blockId, colorType, isMindMap, isNe
     }
 }
 
-// resultPath: inout array [el, el.parent, ..., ancestorEl]
-function findPathToAncestor(el, ancestorEl, resultPath)
-{
-    if ( el == ancestorEl ) return;
-    resultPath.push(el);
-    findPathToAncestor(el.parentNode, ancestorEl, resultPath);
-}
-
-// yes, we wrap a full text block
-function wrapSimpleTextBlockIntoCustomSpan(textBlock, blockId)
-{
-    var block = document.createElement(gCustomHtmlType);
-    
-    if ( textBlock.nodeType == 3 )
-    {
-        textBlock.parentNode.insertBefore(block, textBlock);
-        block.appendChild(textBlock);
-        textBlock = textBlock.parentNode;
-        makeTheBlockReallyCustom(textBlock, blockId);
-        return;
-    }
-    
-    if (  textBlock.nodeName == "ins" )
-    {
-        if ( textBlock.children != "undefined" && textBlock.children.length == 1 )
-        {
-            textBlock = textBlock.children[0];
-        }
-    }
-        
-    if ( gQuiteComplexTags.includes(textBlock.nodeName) )
-    {
-        var tagBefore = "<"+gCustomHtmlType+">";
-        var tagAfter = "</"+gCustomHtmlType+">";
-        textBlock.innerHTML = tagBefore + textBlock.innerHTML + tagAfter;
-        makeTheBlockReallyCustom(textBlock.children[0], blockId);
-    }
-    else
-    {
-        textBlock.parentNode.insertBefore(block, textBlock);
-        block.appendChild(textBlock);
-        textBlock = textBlock.parentNode;
-        makeTheBlockReallyCustom(textBlock, blockId);
-    }
-}
-
 function makeTheBlockReallyCustom(newBlock, blockId)
 {
     newBlock.className = "MyCustomBlock" + blockId.toString();
@@ -191,27 +201,6 @@ function makeTheBlockReallyCustom(newBlock, blockId)
     //style.display = "inline-block";
 }
 
-function modifyTreePartForBorderElement(elem, elemBlockAncestor, blockId, dirNext)
-{
-    while(elem != elemBlockAncestor)
-    {
-        if ( elem && elem.nodeType == 3)
-        {
-            var elemPtr = elem;
-            wrapSimpleTextBlockIntoCustomSpan(elemPtr, blockId);
-        }
-        if ( dirNext )
-        {
-            if ( elem && elem.nextSibling == null ) { elem = elem.parentNode; continue; }
-            elem = elem.nextSibling;
-        }
-        else
-        {
-            if ( elem && elem.previousSibling == null ) { elem = elem.parentNode; continue; }
-            elem = elem.previousSibling;
-        }
-    }
-}
 
 function isThereSuchBlockOnThisPage(blockId)
 {
@@ -234,57 +223,8 @@ function processContextMenuCommand(colorType, isMindMap, gCustomBlockNum)
     }
     else
     {
-        var selText = window.getSelection().toString();
-        if ( selText.length !== 0 )
-        {
-            var range = window.getSelection().getRangeAt(0);
-            if ( range.startContainer != range.endContainer )
-            {
-                var ancestor = range.commonAncestorContainer;
-                var startPath = [], endPath = [];
-                findPathToAncestor(range.startContainer, ancestor, startPath);
-                findPathToAncestor(range.endContainer, ancestor, endPath);
-                
-                var startBlockAncestor = startPath[startPath.length-1];
-                var endBlockAncestor = endPath[endPath.length-1];
-                
-                var startedDoingMiddleBlocks = false;
-                for ( var ii=0; ii<startBlockAncestor.parentNode.children.length; ii++)
-                {
-                    var block_block = startBlockAncestor.parentNode.children[ii];
-                    
-                    if ( !startedDoingMiddleBlocks && block_block == startBlockAncestor )
-                    {
-                        startedDoingMiddleBlocks = true;
-                        continue;
-                    }
-                    if ( startedDoingMiddleBlocks && block_block == endBlockAncestor)
-                    {
-                        break;
-                    }
-                    
-                    if ( startedDoingMiddleBlocks )
-                    {
-                        wrapSimpleTextBlockIntoCustomSpan(block_block, gCustomBlockNum);
-                    }
-                }
-                
-                var start = range.startContainer.splitText(range.startOffset);
-                modifyTreePartForBorderElement(start, startBlockAncestor, gCustomBlockNum, true); // range.startContainer
-                var end = range.endContainer.splitText(range.endOffset);
-                end = end.previousSibling;
-                modifyTreePartForBorderElement(end, endBlockAncestor, gCustomBlockNum, false);
-            }
-            else
-            {
-                var curCustomBlock = document.createElement(gCustomHtmlType);
-                range.surroundContents(curCustomBlock);
-                makeTheBlockReallyCustom(curCustomBlock, gCustomBlockNum);
-            }
-            changeExistingCustomBlockProperties(gCustomBlockNum, colorType, isMindMap, true);
-            
-            clearTextSelection();
-            resetActiveBlock();
-        }
+        var selString = highlightSelectionSomehow(getColorStringForColorType(colorType), isMindMap, gCustomBlockNum);
+        resetActiveBlock();
+        webkit.messageHandlers.addedCustomBlockFromSelection.postMessage(selString);
     }
 }
