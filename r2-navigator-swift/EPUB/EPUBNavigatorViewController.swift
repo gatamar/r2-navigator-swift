@@ -636,6 +636,10 @@ extension EPUBNavigatorViewController: EPUBSpreadViewDelegate {
     func spreadView(_ spreadView: EPUBSpreadView, didStartDragAndDrop: Bool) {
         delegate?.navigator(self, didDragAndDropBegin: didStartDragAndDrop)
     }
+    
+    func spreadView(_ spreadView: EPUBSpreadView, didAddCustomBlock: (String)) {
+        delegate?.navigator(self, didAddCustomBlock: didAddCustomBlock)
+    }
 }
 
 extension EPUBNavigatorViewController: EditingActionsControllerDelegate {

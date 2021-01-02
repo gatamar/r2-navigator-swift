@@ -117,6 +117,8 @@ public protocol NavigatorDelegate: AnyObject {
     func navigator(_ navigator: Navigator, didScrollingBegin: Bool)
     
     func navigator(_ navigator: Navigator, didDragAndDropBegin: Bool)
+    
+    func navigator(_ navigator: Navigator, didAddCustomBlock: (String))
 }
 
 

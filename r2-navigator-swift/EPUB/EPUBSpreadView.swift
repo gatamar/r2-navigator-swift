@@ -34,11 +34,11 @@ protocol EPUBSpreadViewDelegate: class {
     /// Called when the user finished selecting.
     func spreadView(_ spreadView: EPUBSpreadView, selectionChangeEnd atRect: CGRect)
     
-    /// Called when the user tapped on an internal link.
     func spreadView(_ spreadView: EPUBSpreadView, didStartScrolling: Bool)
     
-    /// Called when the user tapped on an internal link.
     func spreadView(_ spreadView: EPUBSpreadView, didStartDragAndDrop: Bool)
+    
+    func spreadView(_ spreadView: EPUBSpreadView, didAddCustomBlock: (String))
 }
 
 class EPUBSpreadView: UIView, Loggable {
@@ -284,9 +284,7 @@ class EPUBSpreadView: UIView, Loggable {
     }
     
     private func addedCustomBlockFromSelection(_ body: Any) {
-        print(body as! String)
-        abort()
-        //delegate?.spreadView(self, addedCustomBlockFromSelection: true)
+        delegate?.spreadView(self, didAddCustomBlock: (body as! String))
     }
     
     /// Called by the JavaScript layer when the user's touch ended.
