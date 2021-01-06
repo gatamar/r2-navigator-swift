@@ -93,7 +93,23 @@ public extension Navigator {
 
 }
 
-
+public struct CustomBlockDTO {
+    public var noteID: Int64
+    //public var bookID: Int64
+    public var colorType: Int
+    public var pageID: String
+    public var serializedSel: String
+    
+    // , bookID: Int64
+    public init(noteID: Int64, colorType: Int, pageID: String, serializedSel: String) {
+        self.noteID = noteID
+        //self.bookID = bookID
+        self.colorType = colorType
+        self.pageID = pageID
+        self.serializedSel = serializedSel
+    }
+}
+    
 public protocol NavigatorDelegate: AnyObject {
 
     /// Called when the current position in the publication changed. You should save the locator here to restore the last read page.
@@ -118,7 +134,7 @@ public protocol NavigatorDelegate: AnyObject {
     
     func navigator(_ navigator: Navigator, didDragAndDropBegin: Bool)
     
-    func navigator(_ navigator: Navigator, didAddCustomBlock: (String))
+    func navigator(_ navigator: Navigator, didAddCustomBlock block: CustomBlockDTO)
 }
 
 

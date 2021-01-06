@@ -225,6 +225,10 @@ function processContextMenuCommand(colorType, isMindMap, gCustomBlockNum)
     {
         var selString = highlightSelectionSomehow(getColorStringForColorType(colorType), isMindMap, gCustomBlockNum);
         resetActiveBlock();
-        webkit.messageHandlers.addedCustomBlockFromSelection.postMessage(selString);
+        
+        var info = {}
+        info["serialSel"] = selString;
+        info["blockID"] = 42;
+        webkit.messageHandlers.addedCustomBlockFromSelection.postMessage(info);
     }
 }

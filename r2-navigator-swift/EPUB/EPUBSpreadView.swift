@@ -38,7 +38,7 @@ protocol EPUBSpreadViewDelegate: class {
     
     func spreadView(_ spreadView: EPUBSpreadView, didStartDragAndDrop: Bool)
     
-    func spreadView(_ spreadView: EPUBSpreadView, didAddCustomBlock: (String))
+    func spreadView(_ spreadView: EPUBSpreadView, didAddCustomBlock block: CustomBlockDTO)
 }
 
 class EPUBSpreadView: UIView, Loggable {
@@ -284,7 +284,15 @@ class EPUBSpreadView: UIView, Loggable {
     }
     
     private func addedCustomBlockFromSelection(_ body: Any) {
-        delegate?.spreadView(self, didAddCustomBlock: (body as! String))
+        guard let message = body as? [String: Any],
+            let serialSel = message["serialSel"] as? String,
+            let blockID = message["blockID"] as? Int64 else
+        {
+            log(.warning, "Invalid body for selectionDidChange: \(body)")
+            abort()
+            return
+        }
+        delegate?.spreadView(self, didAddCustomBlock: CustomBlockDTO(noteID: blockID, colorType: 12, pageID: "qwerty", serializedSel: serialSel))
     }
     
     /// Called by the JavaScript layer when the user's touch ended.
