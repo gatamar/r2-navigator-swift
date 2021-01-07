@@ -63,6 +63,9 @@ public protocol Navigator {
 
     @discardableResult
     func makeCustomBlock(with props: CustomBlockProps, completion: @escaping () -> Void) -> Bool
+    
+    @discardableResult
+    func reapplySelection(selection blocks: [CustomBlockDTO], completion: @escaping () -> Void) -> Bool
 }
 
 public extension Navigator {
@@ -135,6 +138,8 @@ public protocol NavigatorDelegate: AnyObject {
     func navigator(_ navigator: Navigator, didDragAndDropBegin: Bool)
     
     func navigator(_ navigator: Navigator, didAddCustomBlock block: CustomBlockDTO)
+    
+    func navigator(_ navigator: Navigator, didLoadSpread spread: Link)
 }
 
 

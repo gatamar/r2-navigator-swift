@@ -507,6 +507,12 @@ open class EPUBNavigatorViewController: UIViewController, VisualNavigator, Logga
         return spreadView.makeCustomBlock(props)
     }
     
+    public func reapplySelection(selection blocks: [CustomBlockDTO], completion: @escaping () -> Void) -> Bool {
+        guard let spreadView = paginationView.currentView as? EPUBSpreadView else {
+            return false
+        }
+        return spreadView.reapplySelection(selection: blocks, completion: completion)
+    }
 }
 
 extension EPUBNavigatorViewController: EPUBSpreadViewDelegate {
@@ -642,7 +648,7 @@ extension EPUBNavigatorViewController: EPUBSpreadViewDelegate {
     }
     
     func spreadView(_ spreadView: EPUBSpreadView, didLoadSpread spread: Link) {
-        print("TADAM didLoadSpread: \(spread.href)")
+        delegate?.navigator(self, didLoadSpread: spread)
     }
 }
 

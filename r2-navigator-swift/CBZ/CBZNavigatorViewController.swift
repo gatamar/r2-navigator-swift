@@ -18,6 +18,10 @@ public protocol CBZNavigatorDelegate: VisualNavigatorDelegate { }
 
 /// A view controller used to render a CBZ `Publication`.
 open class CBZNavigatorViewController: UIViewController, VisualNavigator, Loggable {
+    public func reapplySelection(selection blocks: [CustomBlockDTO], completion: @escaping () -> Void) -> Bool {
+        return false
+    }
+    
     public func makeCustomBlock(with props: CustomBlockProps, completion: @escaping () -> Void) -> Bool {
         return false
     }

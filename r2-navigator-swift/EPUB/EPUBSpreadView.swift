@@ -365,7 +365,16 @@ class EPUBSpreadView: UIView, Loggable {
         return false
     }
 
-    
+    func reapplySelection(selection blocks: [CustomBlockDTO], completion: @escaping () -> Void) -> Bool {
+        for block in blocks {
+            let cmd = String(format: "restorePreviousHighlight(\"%@\", %d, false, %d);", block.serializedSel, block.colorType, block.noteID)
+            print("TADAM reapplySelection: \(cmd)")
+            self.evaluateScript(cmd)
+        }
+        completion()
+        return true
+    }
+        
     // MARK: - Scripts
     
     private static let gesturesScript = loadScript(named: "gestures")

@@ -1,4 +1,4 @@
-function restorePreviousHighlight(sel_str, color, border, blockId)
+function restorePreviousHighlight(sel_str, colorType, border, blockId)
 {
     var highlighter;
     rangy.init();
@@ -9,7 +9,7 @@ function restorePreviousHighlight(sel_str, color, border, blockId)
         tagNames: ["span", "a"],
         selection: rangy.restoreSelectionFromString(sel_str)
     }));
-    highlighter.highlightSelection("highlight", null, color, border, blockId);
+    highlighter.highlightSelection("highlight", null, getColorStringForColorType(colorType), border, blockId);
 }
 
 function highlightSelectionSomehow(color, border, blockId)
