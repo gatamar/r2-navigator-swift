@@ -528,7 +528,7 @@ open class EPUBNavigatorViewController: UIViewController, VisualNavigator, Logga
 
 extension EPUBNavigatorViewController: EPUBSpreadViewDelegate {
     
-    func spreadView(_ spreadView: EPUBSpreadView, didTapAt point: CGPoint, atCustomBlock blockId: Int) {
+    func spreadView(_ spreadView: EPUBSpreadView, didTapAt point: CGPoint, atCustomBlock blockId: Int64) {
         // We allow taps in any state, because we should always be able to toggle the navigation bar,
         // even while a locator is pending.
         

@@ -161,11 +161,11 @@ function changeExistingCustomBlockProperties(blockId, colorType, isMindMap )
 
             if ( isMindMap )
             {
-                curCustomBlock.style.removeProperty('borderBottom');
+                curCustomBlock.style.borderBottom = "2px solid #0000FF";
             }
             else
             {
-                curCustomBlock.style.borderBottom = "2px solid #0000FF";
+                curCustomBlock.style.removeProperty('borderBottom');
             }
         }
     }

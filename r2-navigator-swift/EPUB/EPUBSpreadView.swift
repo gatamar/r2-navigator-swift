@@ -17,7 +17,7 @@ import SwiftSoup
 protocol EPUBSpreadViewDelegate: class {
     
     /// Called when the user tapped on the spread contents.
-    func spreadView(_ spreadView: EPUBSpreadView, didTapAt point: CGPoint, atCustomBlock blockId: Int)
+    func spreadView(_ spreadView: EPUBSpreadView, didTapAt point: CGPoint, atCustomBlock blockId: Int64)
     
     /// Called when the user tapped on an external link.
     func spreadView(_ spreadView: EPUBSpreadView, didTapOnExternalURL url: URL)
@@ -254,7 +254,7 @@ class EPUBSpreadView: UIView, Loggable {
         let str = String(format: "processContextMenuCommand(%d, %@, %d);", props.color, props.isMindMap ? "true":"false", props.blockId)
         print("createCustomBlock: \(str)")
         evaluateScript(str) { (res, error) in
-            print(error)
+            print(error?.localizedDescription ?? "")
         }
         return true
     }
@@ -263,7 +263,7 @@ class EPUBSpreadView: UIView, Loggable {
         let str = String(format: "processContextMenuCommand(%d, %@, %d);", props.color, props.isMindMap ? "true":"false", props.blockId)
         print("editCustomBlock: \(str)")
         evaluateScript(str) { (res, error) in
-            print(error)
+            print(error?.localizedDescription ?? "")
         }
         return true
     }
@@ -622,7 +622,7 @@ struct TapData {
     let clientY: Int
     let targetElement: String
     let interactiveElement: String?
-    let customBlockId: Int // -1, if no block
+    let customBlockId: Int64 // -1, if no block
     let debugInfo: String 
     
     init(dict: [String: Any]) {
@@ -633,7 +633,7 @@ struct TapData {
         self.clientY = dict["clientY"] as? Int ?? 0
         self.targetElement = dict["targetElement"] as? String ?? ""
         self.interactiveElement = dict["interactiveElement"] as? String
-        self.customBlockId = dict["customBlockId"] as? Int ?? -1
+        self.customBlockId = dict["customBlockId"] as? Int64 ?? -1
         self.debugInfo = dict["debugInfo"] as? String ?? "No debugInfo!"
     }
     

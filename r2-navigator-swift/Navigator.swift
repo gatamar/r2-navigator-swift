@@ -14,11 +14,11 @@ import SafariServices
 import R2Shared
 
 public struct CustomBlockProps {
-    public var blockId: Int = -1
+    public var blockId: Int64 = -1
     public var color: Int = 0
     public var isMindMap: Bool = false
     
-    public init(blockId: Int, color: Int, isMindMap: Bool) {
+    public init(blockId: Int64, color: Int, isMindMap: Bool) {
         self.blockId = blockId
         self.color = color
         self.isMindMap = isMindMap
