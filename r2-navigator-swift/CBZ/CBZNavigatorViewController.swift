@@ -22,7 +22,11 @@ open class CBZNavigatorViewController: UIViewController, VisualNavigator, Loggab
         return false
     }
     
-    public func makeCustomBlock(with props: CustomBlockProps, completion: @escaping () -> Void) -> Bool {
+    public func createCustomBlock(with props: CustomBlockProps, completion: @escaping () -> Void) -> Bool {
+        return false
+    }
+    
+    public func editCustomBlock(with props: CustomBlockProps, completion: @escaping () -> Void) -> Bool {
         return false
     }
     

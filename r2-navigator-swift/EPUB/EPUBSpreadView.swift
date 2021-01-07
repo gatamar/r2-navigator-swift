@@ -207,6 +207,8 @@ class EPUBSpreadView: UIView, Loggable {
         let tapData = TapData(data: data)
         lastTap = tapData
         
+        print("tapData.customBlockId = \(tapData.customBlockId) \(tapData.debugInfo)")
+        
         // Ignores taps on interactive elements, or if the script prevents the default behavior.
         if !tapData.defaultPrevented && tapData.interactiveElement == nil,
             let point = pointFromTap(tapData)
@@ -248,12 +250,22 @@ class EPUBSpreadView: UIView, Loggable {
         })
     }
     
-    func makeCustomBlock(_ props: CustomBlockProps) -> Bool {
+    func createCustomBlock(_ props: CustomBlockProps) -> Bool {
         let str = String(format: "processContextMenuCommand(%d, %@, %d);", props.color, props.isMindMap ? "true":"false", props.blockId)
-        print("makeCustomBlock: \(str)")
+        print("createCustomBlock: \(str)")
         evaluateScript(str) { (res, error) in
             print(error)
         }
+        return true
+    }
+    
+    func editCustomBlock(_ props: CustomBlockProps) -> Bool {
+        abort() // TODO
+//        let str = String(format: "processContextMenuCommand(%d, %@, %d);", props.color, props.isMindMap ? "true":"false", props.blockId)
+//        print("createCustomBlock: \(str)")
+//        evaluateScript(str) { (res, error) in
+//            print(error)
+//        }
         return true
     }
                     
@@ -612,6 +624,7 @@ struct TapData {
     let targetElement: String
     let interactiveElement: String?
     let customBlockId: Int // -1, if no block
+    let debugInfo: String 
     
     init(dict: [String: Any]) {
         self.defaultPrevented = dict["defaultPrevented"] as? Bool ?? false
@@ -622,6 +635,7 @@ struct TapData {
         self.targetElement = dict["targetElement"] as? String ?? ""
         self.interactiveElement = dict["interactiveElement"] as? String
         self.customBlockId = dict["customBlockId"] as? Int ?? -1
+        self.debugInfo = dict["debugInfo"] as? String ?? "No debugInfo!"
     }
     
     init(data: Any) {

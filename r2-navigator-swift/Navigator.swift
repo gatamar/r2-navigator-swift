@@ -62,7 +62,10 @@ public protocol Navigator {
     func goBackward(animated: Bool, completion: @escaping () -> Void) -> Bool
 
     @discardableResult
-    func makeCustomBlock(with props: CustomBlockProps, completion: @escaping () -> Void) -> Bool
+    func createCustomBlock(with props: CustomBlockProps, completion: @escaping () -> Void) -> Bool
+    
+    @discardableResult
+    func editCustomBlock(with props: CustomBlockProps, completion: @escaping () -> Void) -> Bool
     
     @discardableResult
     func reapplySelection(for spread: Link, selection blocks: [CustomBlockDTO], completion: @escaping () -> Void) -> Bool

@@ -95,6 +95,8 @@
                 el.style.borderBottom = "2px solid #0000FF";
             else
                 el.style.removeProperty('borderBottom');
+            
+            el.setAttribute("blockId", blockId.toString());
         }
 
         var removeClass = (function() {
