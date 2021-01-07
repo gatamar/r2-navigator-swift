@@ -640,6 +640,10 @@ extension EPUBNavigatorViewController: EPUBSpreadViewDelegate {
     func spreadView(_ spreadView: EPUBSpreadView, didAddCustomBlock block: CustomBlockDTO) {
         delegate?.navigator(self, didAddCustomBlock: block)
     }
+    
+    func spreadView(_ spreadView: EPUBSpreadView, didLoadSpread spread: Link) {
+        print("TADAM didLoadSpread: \(spread.href)")
+    }
 }
 
 extension EPUBNavigatorViewController: EditingActionsControllerDelegate {

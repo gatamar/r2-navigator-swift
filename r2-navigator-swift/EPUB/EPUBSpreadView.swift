@@ -39,6 +39,8 @@ protocol EPUBSpreadViewDelegate: class {
     func spreadView(_ spreadView: EPUBSpreadView, didStartDragAndDrop: Bool)
     
     func spreadView(_ spreadView: EPUBSpreadView, didAddCustomBlock block: CustomBlockDTO)
+    
+    func spreadView(_ spreadView: EPUBSpreadView, didLoadSpread spread: Link)
 }
 
 class EPUBSpreadView: UIView, Loggable {
@@ -231,6 +233,7 @@ class EPUBSpreadView: UIView, Loggable {
         spreadLoaded = true
         applyUserSettingsStyle()
         spreadDidLoad()
+        delegate?.spreadView(self, didLoadSpread: spread.leading)
     }
     
     /// To be overriden to customize the behavior after the spread is loaded.
