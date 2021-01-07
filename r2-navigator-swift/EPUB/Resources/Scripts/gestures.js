@@ -59,19 +59,22 @@
     {
         blockId = parseInt(target.className.substring("MyCustomBlock".length));
     }
-    // Send the tap data over the JS bridge even if it's been handled
-    // within the webview, so that it can be preserved and used
-    // by the WKNavigationDelegate if needed.
-    webkit.messageHandlers.tap.postMessage({
-      "defaultPrevented": event.defaultPrevented,
-      "screenX": event.screenX,
-      "screenY": event.screenY,
-      "clientX": event.clientX,
-      "clientY": event.clientY,
-      "targetElement": event.target.outerHTML,
-      "interactiveElement": nearestInteractiveElement(event.target),
-      "customBlockId": blockId,
-    });
+    else
+    {
+        // Send the tap data over the JS bridge even if it's been handled
+        // within the webview, so that it can be preserved and used
+        // by the WKNavigationDelegate if needed.
+        webkit.messageHandlers.tap.postMessage({
+          "defaultPrevented": event.defaultPrevented,
+          "screenX": event.screenX,
+          "screenY": event.screenY,
+          "clientX": event.clientX,
+          "clientY": event.clientY,
+          "targetElement": event.target.outerHTML,
+          "interactiveElement": nearestInteractiveElement(event.target),
+          "customBlockId": blockId,
+        });
+    }
 
     // We don't want to disable the default WebView behavior as it breaks some features without bringing any value.
 //    event.stopPropagation();

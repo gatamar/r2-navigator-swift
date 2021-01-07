@@ -4,12 +4,12 @@ function restorePreviousHighlight(sel_str, colorType, border, blockId)
     rangy.init();
     
     highlighter = rangy.createHighlighter();
-    highlighter.addClassApplier(rangy.createClassApplier("highlight", 42, "green", {
+    highlighter.addClassApplier(rangy.createClassApplier("MyCustomBlock", 42, "green", {
         ignoreWhiteSpace: true,
         tagNames: ["span", "a"],
         selection: rangy.restoreSelectionFromString(sel_str)
     }));
-    highlighter.highlightSelection("highlight", null, getColorStringForColorType(colorType), border, blockId);
+    highlighter.highlightSelection("MyCustomBlock", null, getColorStringForColorType(colorType), border, blockId);
 }
 
 function highlightSelectionSomehow(color, border, blockId)
@@ -21,11 +21,11 @@ function highlightSelectionSomehow(color, border, blockId)
     var selString = rangy.serializeSelection(selObj, true);
     
     highlighter = rangy.createHighlighter();
-    highlighter.addClassApplier(rangy.createClassApplier("highlight", blockId, color, {
+    highlighter.addClassApplier(rangy.createClassApplier("MyCustomBlock", blockId, color, {
         ignoreWhiteSpace: true,
         tagNames: ["span", "a"]
     }));
-    highlighter.highlightSelection("highlight", null, color, border, blockId);
+    highlighter.highlightSelection("MyCustomBlock", null, color, border, blockId);
     
     window.getSelection().removeAllRanges();
     

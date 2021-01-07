@@ -65,7 +65,7 @@ public protocol Navigator {
     func makeCustomBlock(with props: CustomBlockProps, completion: @escaping () -> Void) -> Bool
     
     @discardableResult
-    func reapplySelection(selection blocks: [CustomBlockDTO], completion: @escaping () -> Void) -> Bool
+    func reapplySelection(for spread: Link, selection blocks: [CustomBlockDTO], completion: @escaping () -> Void) -> Bool
 }
 
 public extension Navigator {

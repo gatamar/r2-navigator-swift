@@ -365,7 +365,7 @@ class EPUBSpreadView: UIView, Loggable {
         return false
     }
 
-    func reapplySelection(selection blocks: [CustomBlockDTO], completion: @escaping () -> Void) -> Bool {
+    func reapplySelection(for spread: Link, selection blocks: [CustomBlockDTO], completion: @escaping () -> Void) -> Bool {
         for block in blocks {
             let cmd = String(format: "restorePreviousHighlight(\"%@\", %d, false, %d);", block.serializedSel, block.colorType, block.noteID)
             print("TADAM reapplySelection: \(cmd)")
