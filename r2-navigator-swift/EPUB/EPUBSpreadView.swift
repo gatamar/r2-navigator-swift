@@ -286,13 +286,16 @@ class EPUBSpreadView: UIView, Loggable {
     private func addedCustomBlockFromSelection(_ body: Any) {
         guard let message = body as? [String: Any],
             let serialSel = message["serialSel"] as? String,
-            let blockID = message["blockID"] as? Int64 else
+            let blockID = message["blockID"] as? Int64,
+            let colorType = message["colorType"] as? Int
+        else
         {
             log(.warning, "Invalid body for selectionDidChange: \(body)")
-            abort()
             return
         }
-        delegate?.spreadView(self, didAddCustomBlock: CustomBlockDTO(noteID: blockID, colorType: 12, pageID: "qwerty", serializedSel: serialSel))
+        
+        let curHref = spread.links[0].href
+        delegate?.spreadView(self, didAddCustomBlock: CustomBlockDTO(noteID: blockID, colorType: colorType, pageHRef: curHref, serializedSel: serialSel))
     }
     
     /// Called by the JavaScript layer when the user's touch ended.

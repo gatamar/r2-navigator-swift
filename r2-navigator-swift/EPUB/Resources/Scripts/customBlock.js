@@ -209,8 +209,7 @@ function isThereSuchBlockOnThisPage(blockId)
     return curCustomBlockS.length != 0;
 }
 
-// returns: dispatches "CMD_CUSTOM_BLOCK_JUST_ADDED_"
-// but should I dispatch it instead of just return in this case?
+// isMindMap: means "drawBorder", no intentional Storage specified :)
 function processContextMenuCommand(colorType, isMindMap, gCustomBlockNum)
 {
     // if there's no such block at this page, let's create it!!!
@@ -228,7 +227,8 @@ function processContextMenuCommand(colorType, isMindMap, gCustomBlockNum)
         
         var info = {}
         info["serialSel"] = selString;
-        info["blockID"] = 42;
+        info["blockID"] = gCustomBlockNum;
+        info["colorType"] = colorType;
         webkit.messageHandlers.addedCustomBlockFromSelection.postMessage(info);
     }
 }
