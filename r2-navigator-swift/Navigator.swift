@@ -105,14 +105,15 @@ public struct CustomBlockDTO {
     public var colorType: Int
     public var pageHRef: String
     public var serializedSel: String
+    public var isMindMap: Bool
     
-    // , bookID: Int64
-    public init(noteID: Int64, colorType: Int, pageHRef: String, serializedSel: String) {
+    public init(noteID: Int64, colorType: Int, pageHRef: String, serializedSel: String, isMindMap: Bool) {
         self.noteID = noteID
         //self.bookID = bookID
         self.colorType = colorType
         self.pageHRef = pageHRef
         self.serializedSel = serializedSel
+        self.isMindMap = isMindMap
     }
 }
     

@@ -309,7 +309,7 @@ class EPUBSpreadView: UIView, Loggable {
         }
         
         let curHref = spread.links[0].href
-        delegate?.spreadView(self, didAddCustomBlock: CustomBlockDTO(noteID: blockID, colorType: colorType, pageHRef: curHref, serializedSel: serialSel))
+        delegate?.spreadView(self, didAddCustomBlock: CustomBlockDTO(noteID: blockID, colorType: colorType, pageHRef: curHref, serializedSel: serialSel, isMindMap: false))
     }
     
     /// Called by the JavaScript layer when the user's touch ended.
@@ -378,7 +378,7 @@ class EPUBSpreadView: UIView, Loggable {
 
     func reapplySelection(for spread: Link, selection blocks: [CustomBlockDTO], completion: @escaping () -> Void) -> Bool {
         for block in blocks {
-            let cmd = String(format: "restorePreviousHighlight(\"%@\", %d, false, %d);", block.serializedSel, block.colorType, block.noteID)
+            let cmd = String(format: "restorePreviousHighlight(\"%@\", %d, %@, %d);", block.serializedSel, block.colorType, block.isMindMap ? "true" : "false", block.noteID)
             print("TADAM reapplySelection: \(cmd)")
             self.evaluateScript(cmd)
         }
