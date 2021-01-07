@@ -130,83 +130,55 @@ function getRGBACssStringForColorType(colorType)
 
 function getColorStringForColorType(colorType)
 {
-    if ( colorType == 1 ) // yellow
-    {
-        return "yellow";
-    }
-    if ( colorType == 2 ) // orange
-    {
-        return "orange";
-    }
-    if ( colorType == 3 ) // blue
-    {
-        return "blue";
-    }
-    if ( colorType == 4 ) // green
-    {
-        return "green";
-    }
+    if ( colorType == 1 ) { return "yellow"; }
+    if ( colorType == 2 ) { return "orange"; }
+    if ( colorType == 3 ) { return "blue"; }
+    if ( colorType == 4 ) { return "green"; }
     return "";
 }
 
 // param "colorType": 0=not color,1,2,3,4 = some pre-defined color types
 // param "isMindMap": -1,0,1
-function changeExistingCustomBlockProperties(blockId, colorType, isMindMap, isNewBlock)
+function changeExistingCustomBlockProperties(blockId, colorType, isMindMap )
 {
-    var curClassName = "MyCustomBlock"+blockId.toString();
-    var curCustomBlockS = document.getElementsByClassName(curClassName);
+    var curCustomBlockS = document.getElementsByClassName("MyCustomBlock");
     
     for (var i=0; i<curCustomBlockS.length; i++)
     {
         var curCustomBlock = curCustomBlockS[i];
-        // "backgroundColor": set, unset, reset, or remove unchanged
-        if ( colorType == 0 )
+        if ( parseInt(curCustomBlock.getAttribute("blockId")) == blockId )
         {
-            //curCustomBlock.style.removeProperty('backgroundColor');
-            curCustomBlock.style.backgroundColor = "";
-        }
-        else
-        {
-            if ( colorType !== -1 )
+            // "backgroundColor": set, unset, reset, or remove unchanged
+            if ( colorType == 0 )
+            {
+                //curCustomBlock.style.removeProperty('backgroundColor');
+                curCustomBlock.style.backgroundColor = "";
+            }
+            else
             {
                 curCustomBlock.style.backgroundColor = getRGBACssStringForColorType(colorType);
             }
-        }
 
-        if ( isMindMap == 0 )
-        {
-            curCustomBlock.style.removeProperty('borderBottom');
+            if ( isMindMap )
+            {
+                curCustomBlock.style.removeProperty('borderBottom');
+            }
+            else
+            {
+                curCustomBlock.style.borderBottom = "2px solid #0000FF";
+            }
         }
-        if ( isMindMap == 1 )
-        {
-            curCustomBlock.style.borderBottom = "2px solid #0000FF";
-        }
-        
-        if ( colorType != -1 )
-            curCustomBlock.setAttribute("ca_colorType", colorType.toString());
-        
-        if ( isMindMap != -1 )
-            curCustomBlock.setAttribute("ca_isMindMap", isMindMap.toString());
     }
 }
 
-function makeTheBlockReallyCustom(newBlock, blockId)
-{
-    newBlock.className = "MyCustomBlock" + blockId.toString();
-    newBlock.style.textDecoration = "none";
-    
-    newBlock.setAttribute("ca_colorType", "0");
-    newBlock.setAttribute("ca_isMindMap", "0");
-    
-    //style.display = "inline-block";
-}
-
-
 function isThereSuchBlockOnThisPage(blockId)
 {
-    var curClassName = "MyCustomBlock"+blockId.toString();
-    var curCustomBlockS = document.getElementsByClassName(curClassName);
-    return curCustomBlockS.length != 0;
+    var curCustomBlockS = document.getElementsByClassName("MyCustomBlock");
+    for(var i=0; i<curCustomBlockS.length; ++i)
+    {
+        if ( parseInt(curCustomBlockS[i].getAttribute("blockId")) == blockId ) return true;
+    }
+    return false;
 }
 
 // isMindMap: means "drawBorder", no intentional Storage specified :)
@@ -217,7 +189,7 @@ function processContextMenuCommand(colorType, isMindMap, gCustomBlockNum)
     
     if ( isThereSuchBlockOnThisPage(gCustomBlockNum) )
     {
-        changeExistingCustomBlockProperties(gCustomBlockNum, colorType, isMindMap, false);
+        changeExistingCustomBlockProperties(gCustomBlockNum, colorType, isMindMap);
         resetActiveBlock();
     }
     else
