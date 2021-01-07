@@ -89,7 +89,7 @@
             if ( color == "blue" ) el.style.backgroundColor = "rgba(0,0,255,0.5)";
             if ( color == "yellow" ) el.style.backgroundColor = "rgba(255,255,0,0.5)";
             if ( color == "orange" ) el.style.backgroundColor = "rgba(255,128,0,0.5)";
-            if ( color == "none" ) el.style.backgroundColor = "";
+            if ( color == "none" || color == "" ) el.style.backgroundColor = "";
             
             if ( border )
                 el.style.borderBottom = "2px solid #0000FF";

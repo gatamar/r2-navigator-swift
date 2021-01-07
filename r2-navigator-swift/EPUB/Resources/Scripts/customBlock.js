@@ -130,6 +130,7 @@ function getRGBACssStringForColorType(colorType)
 
 function getColorStringForColorType(colorType)
 {
+    if ( colorType == 0 ) { return ""; }
     if ( colorType == 1 ) { return "yellow"; }
     if ( colorType == 2 ) { return "orange"; }
     if ( colorType == 3 ) { return "blue"; }
