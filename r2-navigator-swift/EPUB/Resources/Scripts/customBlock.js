@@ -27,8 +27,6 @@ function highlightSelectionSomehow(color, border, blockId)
     }));
     highlighter.highlightSelection("MyCustomBlock", null, color, border, blockId);
     
-    window.getSelection().removeAllRanges();
-    
     return selString;
 }
 
@@ -202,6 +200,10 @@ function processContextMenuCommand(colorType, isMindMap, gCustomBlockNum)
         info["serialSel"] = selString;
         info["blockID"] = gCustomBlockNum;
         info["colorType"] = colorType;
+        info["text"] = window.getSelection().toString();
+        
+        window.getSelection().removeAllRanges();
+        
         webkit.messageHandlers.addedCustomBlockFromSelection.postMessage(info);
     }
 }

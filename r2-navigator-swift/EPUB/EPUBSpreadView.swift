@@ -301,7 +301,8 @@ class EPUBSpreadView: UIView, Loggable {
         guard let message = body as? [String: Any],
             let serialSel = message["serialSel"] as? String,
             let blockID = message["blockID"] as? Int64,
-            let colorType = message["colorType"] as? Int
+            let colorType = message["colorType"] as? Int,
+            let text = message["text"] as? String
         else
         {
             log(.warning, "Invalid body for selectionDidChange: \(body)")
@@ -309,7 +310,7 @@ class EPUBSpreadView: UIView, Loggable {
         }
         
         let curHref = spread.links[0].href
-        delegate?.spreadView(self, didAddCustomBlock: CustomBlockDTO(noteID: blockID, colorType: colorType, pageHRef: curHref, serializedSel: serialSel, isMindMap: false))
+        delegate?.spreadView(self, didAddCustomBlock: CustomBlockDTO(noteID: blockID, colorType: colorType, pageHRef: curHref, serializedSel: serialSel, isMindMap: false, text: text))
     }
     
     /// Called by the JavaScript layer when the user's touch ended.
