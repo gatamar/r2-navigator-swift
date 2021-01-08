@@ -17,11 +17,13 @@ public struct CustomBlockProps {
     public var blockId: Int64 = -1
     public var color: Int = 0
     public var isMindMap: Bool = false
+    public var text: String = ""
     
-    public init(blockId: Int64, color: Int, isMindMap: Bool) {
+    public init(blockId: Int64, color: Int, isMindMap: Bool, text: String) {
         self.blockId = blockId
         self.color = color
         self.isMindMap = isMindMap
+        self.text = text
     }
 }
 
