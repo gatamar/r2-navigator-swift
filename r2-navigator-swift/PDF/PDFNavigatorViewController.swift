@@ -26,10 +26,10 @@ open class PDFNavigatorViewController: UIViewController, VisualNavigator, Loggab
         return false
     }
     
-    public func createCustomBlock(with props: CustomBlockProps, completion: @escaping () -> Void) -> Bool {
+    public func createCustomBlock(with props: CustomBlockProps, completion: @escaping (Swift.Error?) -> Void) -> Bool {
         return false
     }
-    public func editCustomBlock(with props: CustomBlockProps, completion: @escaping () -> Void) -> Bool {
+    public func editCustomBlock(with props: CustomBlockProps, completion: @escaping (Swift.Error?) -> Void) -> Bool {
         return false
     }
     

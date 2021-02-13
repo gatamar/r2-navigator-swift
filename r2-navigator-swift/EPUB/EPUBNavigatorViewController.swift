@@ -500,18 +500,18 @@ open class EPUBNavigatorViewController: UIViewController, VisualNavigator, Logga
         return go(to: direction, animated: animated, completion: completion)
     }
     
-    public func createCustomBlock(with props: CustomBlockProps, completion: @escaping () -> Void) -> Bool {
+    public func createCustomBlock(with props: CustomBlockProps, completion: @escaping (Error?) -> Void) -> Bool {
         guard let spreadView = paginationView.currentView as? EPUBSpreadView else {
             return false
         }
-        return spreadView.createCustomBlock(props)
+        return spreadView.createCustomBlock(props, completion: completion)
     }
     
-    public func editCustomBlock(with props: CustomBlockProps, completion: @escaping () -> Void) -> Bool {
+    public func editCustomBlock(with props: CustomBlockProps, completion: @escaping (Error?) -> Void) -> Bool {
         guard let spreadView = paginationView.currentView as? EPUBSpreadView else {
             return false
         }
-        return spreadView.editCustomBlock(props)
+        return spreadView.editCustomBlock(props, completion: completion)
     }
     
     public func reapplySelection(for spread: Link, selection blocks: [CustomBlockDTO], completion: @escaping () -> Void) -> Bool {

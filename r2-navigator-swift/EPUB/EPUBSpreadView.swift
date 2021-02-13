@@ -250,20 +250,22 @@ class EPUBSpreadView: UIView, Loggable {
         })
     }
     
-    func createCustomBlock(_ props: CustomBlockProps) -> Bool {
+    func createCustomBlock(_ props: CustomBlockProps, completion: @escaping (Error?) -> Void) -> Bool {
         let str = String(format: "processContextMenuCommand(%d, %@, %d);", props.color, props.isMindMap ? "true":"false", props.blockId)
         print("createCustomBlock: \(str)")
         evaluateScript(str) { (res, error) in
             print(error?.localizedDescription ?? "")
+            completion(error)
         }
         return true
     }
     
-    func editCustomBlock(_ props: CustomBlockProps) -> Bool {
+    func editCustomBlock(_ props: CustomBlockProps, completion: @escaping (Error?) -> Void) -> Bool {
         let str = String(format: "processContextMenuCommand(%d, %@, %d);", props.color, props.isMindMap ? "true":"false", props.blockId)
         print("editCustomBlock: \(str)")
         evaluateScript(str) { (res, error) in
             print(error?.localizedDescription ?? "")
+            completion(error)
         }
         return true
     }

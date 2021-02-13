@@ -63,11 +63,13 @@ public protocol Navigator {
     @discardableResult
     func goBackward(animated: Bool, completion: @escaping () -> Void) -> Bool
 
+    /// If creation of a custom block is 1)supported and 2)successful, then completion handler, passed by client, is executed.
+    /// - Returns: Whether the creation of block is supported.
     @discardableResult
-    func createCustomBlock(with props: CustomBlockProps, completion: @escaping () -> Void) -> Bool
+    func createCustomBlock(with props: CustomBlockProps, completion: @escaping (Error?) -> Void) -> Bool
     
     @discardableResult
-    func editCustomBlock(with props: CustomBlockProps, completion: @escaping () -> Void) -> Bool
+    func editCustomBlock(with props: CustomBlockProps, completion: @escaping (Error?) -> Void) -> Bool
     
     @discardableResult
     func reapplySelection(for spread: Link, selection blocks: [CustomBlockDTO], completion: @escaping () -> Void) -> Bool
