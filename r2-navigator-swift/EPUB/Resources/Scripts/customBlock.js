@@ -96,6 +96,7 @@ function clearTextSelection() {
     }
 }
 
+// TODO: read json with map "int(colorType):string(rgba_css)"
 function getRGBACssStringForColorType(colorType)
 {
     var red = 128, green = 128, blue = 128;

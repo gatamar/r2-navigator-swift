@@ -650,8 +650,8 @@ extension EPUBNavigatorViewController: EPUBSpreadViewDelegate {
         delegate?.navigator(self, didScrollingBegin: didStartScrolling)
     }
     
-    func spreadView(_ spreadView: EPUBSpreadView, didStartDragAndDrop: Bool) {
-        delegate?.navigator(self, didDragAndDropBegin: didStartDragAndDrop)
+    func spreadView(_ spreadView: EPUBSpreadView, didStartDragAndDrop elRect: CGRect) {
+        delegate?.navigator(self, didDragAndDropBegin: elRect)
     }
     
     func spreadView(_ spreadView: EPUBSpreadView, didAddCustomBlock block: CustomBlockDTO) {

@@ -11,11 +11,19 @@
   });
 
     function onDragStart(event) {
+        const rect = event.target.getBoundingClientRect();
+        offsetX = event.clientX - rect.x;
+        offsetY = event.clientY - rect.y;
+        var info = {};
+        info['elemOffsetX'] = offsetX;
+        info['elemOffsetY'] = offsetY;
+        info['elemWidth'] = rect.width;
+        info['elemHeight'] = rect.height;
         //if (e.dataTransfer !== null)
         //    if ( e.target.tagName == "img")
         //        var src = e.target.getAttribute("src");
         //        //TODO: store this "src", and when asked, give it; also store the tag - wrap in in custom block or so.
-        webkit.messageHandlers.dragAndDropStarted.postMessage({});
+        webkit.messageHandlers.dragAndDropStarted.postMessage(info);
     }
     
     function onTouchStart(event) {

@@ -145,7 +145,7 @@ public protocol NavigatorDelegate: AnyObject {
     
     func navigator(_ navigator: Navigator, didScrollingBegin: Bool)
     
-    func navigator(_ navigator: Navigator, didDragAndDropBegin: Bool)
+    func navigator(_ navigator: Navigator, didDragAndDropBegin elRect: CGRect)
     
     func navigator(_ navigator: Navigator, didAddCustomBlock block: CustomBlockDTO)
     

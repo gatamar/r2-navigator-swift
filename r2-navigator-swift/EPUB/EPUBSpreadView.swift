@@ -36,7 +36,7 @@ protocol EPUBSpreadViewDelegate: class {
     
     func spreadView(_ spreadView: EPUBSpreadView, didStartScrolling: Bool)
     
-    func spreadView(_ spreadView: EPUBSpreadView, didStartDragAndDrop: Bool)
+    func spreadView(_ spreadView: EPUBSpreadView, didStartDragAndDrop elRect: CGRect)
     
     func spreadView(_ spreadView: EPUBSpreadView, didAddCustomBlock block: CustomBlockDTO)
     
@@ -296,7 +296,17 @@ class EPUBSpreadView: UIView, Loggable {
     
     
     private func dragAndDropStarted(_ body: Any) {
-        delegate?.spreadView(self, didStartDragAndDrop: true)
+        guard let message = body as? [String: Any],
+              let x = message["elemOffsetX"] as? Int,
+              let y = message["elemOffsetY"] as? Int,
+              let w = message["elemWidth"] as? Int,
+              let h = message["elemHeight"] as? Int
+        else
+        {
+            log(.warning, "Invalid body for dragAndDropStarted: \(body)")
+            return
+        }
+        delegate?.spreadView(self, didStartDragAndDrop: CGRect(x: x, y: y, width: w, height: h))
     }
     
     private func addedCustomBlockFromSelection(_ body: Any) {
@@ -382,7 +392,7 @@ class EPUBSpreadView: UIView, Loggable {
     func reapplySelection(for spread: Link, selection blocks: [CustomBlockDTO], completion: @escaping () -> Void) -> Bool {
         for block in blocks {
             let cmd = String(format: "restorePreviousHighlight(\"%@\", %d, %@, %d);", block.serializedSel, block.colorType, block.isMindMap ? "true" : "false", block.noteID)
-            print("TADAM reapplySelection: \(cmd)")
+            //print("TADAM reapplySelection: \(cmd)")
             self.evaluateScript(cmd)
         }
         completion()
