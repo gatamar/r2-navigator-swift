@@ -184,7 +184,7 @@ open class EPUBNavigatorViewController: UIViewController, VisualNavigator, Logga
         self.editingActions = EditingActionsController(actions: config.editingActions, rights: publication.rights)
         self.userSettings = UserSettings()
         publication.userProperties.properties = self.userSettings.userProperties.properties
-        self.readingProgression = publication.contentLayout.readingProgression
+        self.readingProgression = publication.metadata.effectiveReadingProgression
         self.config = config
         self.paginationView = PaginationView(frame: .zero, preloadPreviousPositionCount: config.preloadPreviousPositionCount, preloadNextPositionCount: config.preloadNextPositionCount)
 
@@ -682,7 +682,6 @@ extension EPUBNavigatorViewController: PaginationViewDelegate {
             publication: publication,
             spread: spread,
             resourcesURL: resourcesURL,
-            contentLayout: publication.contentLayout,
             readingProgression: readingProgression,
             userSettings: userSettings,
             animatedLoad: false,  // FIXME: custom animated
